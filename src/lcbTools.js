@@ -34,6 +34,15 @@ export function newRoundChatMessage( roundNumber ){
 }
 
 export function getMechClass(actor) {
+  if(actor.type == "npc"){
+    console.log('Actor is an NPC:', actor)
+  }
+  if(actor.type == mech) {
+    console.log('Actor is a Mech:', actor)
+  }
+  if(actor.type == "pilot") {
+    console.log('Actor is a Pilot:', actor)
+  }
   if( game.data.release.generation != 11){
     console.error("This version of Lancer Combat Banner is only for V11");
     return "///";
