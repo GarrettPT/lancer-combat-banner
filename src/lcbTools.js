@@ -34,30 +34,38 @@ export function newRoundChatMessage( roundNumber ){
 }
 
 export function getMechClass(actor) {
-  if(actor.type == "npc"){
-    console.log('Actor is an NPC:', actor)
+  
+  if(actor.type == "npc" && actor.system.class?.system?.flavor && actor.system.class.system.flavor.length > 0 && actor.system.class.system.flavor.includes("[BANNER-DIALOG]")) {
+    return actor.system.class.system.flavor.split("[BANNER-DIALOG]:").pop().split('</p>')[0];
   }
-  if(actor.type == mech) {
-    console.log('Actor is a Mech:', actor)
+
+  if(actor.type == "mech" && actor.system.notes?.length > 0 && actor.system.notes.includes("[BANNER-DIALOG]")) { 
+    console.log('Mech Notes:', actor.system.notes);
+
+    return actor.system.notes.split("[BANNER-DIALOG]:").pop().split('</p>')[0];
   }
-  if(actor.type == "pilot") {
-    console.log('Actor is a Pilot:', actor)
+
+  if(actor.type == "pilot"  && actor.system.notes?.length > 0 && actor.system.notes.includes("[BANNER-DIALOG]")) {
+    return actor.system.notes.split("[BANNER-DIALOG]:").pop().split('</p>')[0];
   }
-  if( game.data.release.generation != 11){
-    console.error("This version of Lancer Combat Banner is only for V11");
-    return "///";
-  }
-  if (actor.type == "npc") {
-    let npcClass =  actor.items.find(e => {return e.type == "npc_class"})?.name || "npc";
-    let npcTemplates = actor.items.filter(e => {return e.type == "npc_template"})
-      .map(e => {return e.name})
-      .join(" ");
-    return npcTemplates + " " + npcClass;
-  } else if (actor.type == "mech") {
-    return actor.name;
-  } else if (actor.type == "pilot") {
-    return actor.name;
-  }
+
+  // Removed 7/22/2025 to patch for v12 - GarrettPT
+  
+  // if( game.data.release.generation != 11){
+  //   console.error("This version of Lancer Combat Banner is only for V11");
+  //   return "///";
+  // }
+  // if (actor.type == "npc") {
+  //   let npcClass =  actor.items.find(e => {return e.type == "npc_class"})?.name || "npc";
+  //   let npcTemplates = actor.items.filter(e => {return e.type == "npc_template"})
+  //     .map(e => {return e.name})
+  //     .join(" ");
+  //   return npcTemplates + " " + npcClass;
+  // } else if (actor.type == "mech") {
+  //   return actor.name;
+  // } else if (actor.type == "pilot") {
+  //   return actor.name;
+  // }
   return "///";
 }
 
